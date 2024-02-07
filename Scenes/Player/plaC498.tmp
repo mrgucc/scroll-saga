@@ -1,4 +1,4 @@
-[gd_scene load_steps=71 format=3 uid="uid://nftmnhwv8jce"]
+[gd_scene load_steps=66 format=3 uid="uid://nftmnhwv8jce"]
 
 [ext_resource type="Texture2D" uid="uid://4cd2j1vusddt" path="res://Art/Character/HeroKnight/HeroKnight.png" id="1_are1r"]
 [ext_resource type="Script" path="res://Scenes/Player/player.gd" id="1_p54w3"]
@@ -7,17 +7,10 @@
 [ext_resource type="Script" path="res://Scenes/Player/AirState.gd" id="5_oltm5"]
 [ext_resource type="Script" path="res://Scenes/Player/StateDebugLabel.gd" id="5_rexe5"]
 [ext_resource type="Script" path="res://Scenes/Player/AttackState.gd" id="6_wh8ac"]
-[ext_resource type="Script" path="res://Scenes/Player/RollState.gd" id="7_aw0eg"]
-[ext_resource type="Script" path="res://Scenes/Player/BlockState.gd" id="8_1fyey"]
-[ext_resource type="Script" path="res://Scenes/Player/BlockArea2D.gd" id="10_en2sw"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5g8h2"]
 radius = 11.0
 height = 40.0
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4ddg0"]
-radius = 11.0
-height = 24.0
 
 [sub_resource type="Animation" id="Animation_v50xi"]
 length = 0.001
@@ -737,9 +730,6 @@ states/wall_slide/position = Vector2(1068, 238)
 transitions = ["jump", "wall_grab", SubResource("AnimationNodeStateMachineTransition_6mfat"), "wall_grab", "wall_slide", SubResource("AnimationNodeStateMachineTransition_ajfak"), "jump", "land", SubResource("AnimationNodeStateMachineTransition_2kfk1"), "move", "roll", SubResource("AnimationNodeStateMachineTransition_1vum0"), "move", "jump", SubResource("AnimationNodeStateMachineTransition_2mwmo"), "roll", "move", SubResource("AnimationNodeStateMachineTransition_socs0"), "move", "attack1", SubResource("AnimationNodeStateMachineTransition_pd7j4"), "attack1", "attack2", SubResource("AnimationNodeStateMachineTransition_d0i8b"), "attack2", "attack3", SubResource("AnimationNodeStateMachineTransition_yfh8y"), "attack1", "move", SubResource("AnimationNodeStateMachineTransition_n5xir"), "attack2", "move", SubResource("AnimationNodeStateMachineTransition_lfdlw"), "attack3", "move", SubResource("AnimationNodeStateMachineTransition_aoib7"), "move", "hurt", SubResource("AnimationNodeStateMachineTransition_wffbu"), "hurt", "move", SubResource("AnimationNodeStateMachineTransition_7b3j1"), "hurt", "death", SubResource("AnimationNodeStateMachineTransition_if4j1"), "block_idle", "block_effect", SubResource("AnimationNodeStateMachineTransition_51vf6"), "move", "block_idle", SubResource("AnimationNodeStateMachineTransition_83ps7"), "block_effect", "block_idle", SubResource("AnimationNodeStateMachineTransition_f56jn"), "block_idle", "move", SubResource("AnimationNodeStateMachineTransition_gaouw"), "death", "End", SubResource("AnimationNodeStateMachineTransition_rhl01"), "Start", "move", SubResource("AnimationNodeStateMachineTransition_vvfh8"), "wall_slide", "move", SubResource("AnimationNodeStateMachineTransition_a3tfh"), "wall_grab", "jump", SubResource("AnimationNodeStateMachineTransition_40jyf"), "land", "move", SubResource("AnimationNodeStateMachineTransition_skl70")]
 graph_offset = Vector2(197.72, 178.22)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_3h5sv"]
-size = Vector2(6, 24)
-
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_p54w3")
 
@@ -751,11 +741,6 @@ vframes = 9
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 6)
 shape = SubResource("CapsuleShape2D_5g8h2")
-
-[node name="RollCollisionShape" type="CollisionShape2D" parent="."]
-position = Vector2(0, 14)
-shape = SubResource("CapsuleShape2D_4ddg0")
-disabled = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -790,16 +775,9 @@ script = ExtResource("6_wh8ac")
 wait_time = 0.4
 one_shot = true
 
-[node name="RollState" type="Node" parent="StateMachine" node_paths=PackedStringArray("state_machine", "standard_collision", "rolling_collision")]
-script = ExtResource("7_aw0eg")
-state_machine = NodePath("..")
-standard_collision = NodePath("../../CollisionShape2D")
-rolling_collision = NodePath("../../RollCollisionShape")
-can_move = false
+[node name="RollState" type="Node" parent="StateMachine"]
 
-[node name="BlockState" type="Node" parent="StateMachine" node_paths=PackedStringArray("blocking_area")]
-script = ExtResource("8_1fyey")
-blocking_area = NodePath("../../BlockArea2D")
+[node name="BlockState" type="Node" parent="StateMachine"]
 
 [node name="StateDebugLabel" type="Label" parent="." node_paths=PackedStringArray("state_machine")]
 offset_left = -48.0
@@ -811,16 +789,5 @@ Facing: "
 script = ExtResource("5_rexe5")
 state_machine = NodePath("../StateMachine")
 
-[node name="BlockArea2D" type="Area2D" parent="."]
-position = Vector2(18, 0)
-monitoring = false
-script = ExtResource("10_en2sw")
-metadata/_edit_group_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BlockArea2D"]
-shape = SubResource("RectangleShape2D_3h5sv")
-
 [connection signal="animation_finished" from="AnimationTree" to="StateMachine/AttackState" method="_on_animation_tree_animation_finished"]
-[connection signal="animation_finished" from="AnimationTree" to="StateMachine/RollState" method="_on_animation_tree_animation_finished"]
 [connection signal="timeout" from="StateMachine/AttackState/Timer" to="StateMachine/AttackState" method="_on_timer_timeout"]
-[connection signal="area_entered" from="BlockArea2D" to="BlockArea2D" method="_on_area_entered"]

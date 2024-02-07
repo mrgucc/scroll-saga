@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://dcu1q7c8avbdh"]
+[gd_scene load_steps=14 format=3 uid="uid://dcu1q7c8avbdh"]
 
 [ext_resource type="Texture2D" uid="uid://j7ghoxu22yqn" path="res://Art/Legacy-Fantasy - High Forest 2.3/Assets/Tiles.png" id="1_m1vew"]
 [ext_resource type="Texture2D" uid="uid://cmq4ug5hn0nqo" path="res://Art/Background/Background.png" id="1_ro55l"]
@@ -7,7 +7,6 @@
 [ext_resource type="Texture2D" uid="uid://dy1dymfnyuvtv" path="res://Art/Assets/Buildings.png" id="4_f08yp"]
 [ext_resource type="Texture2D" uid="uid://cjobcfemv21yy" path="res://Art/Assets/Tree-Assets.png" id="5_t2f4w"]
 [ext_resource type="Texture2D" uid="uid://c1plbc71iqv3" path="res://Art/Assets/Interior-01.png" id="6_kdpb4"]
-[ext_resource type="Texture2D" uid="uid://cpui8uhlw2iax" path="res://Art/Character/Archer/adventurer-bow-Sheet.png" id="8_d1qcu"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_5puuw"]
 texture = ExtResource("1_m1vew")
@@ -5188,15 +5187,13 @@ sources/2 = SubResource("TileSetAtlasSource_l47xo")
 sources/3 = SubResource("TileSetAtlasSource_hha4a")
 sources/4 = SubResource("TileSetAtlasSource_d02qo")
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_a3oux"]
-
 [node name="Test Level" type="Node2D"]
 
 [node name="TextureRect" type="TextureRect" parent="."]
-offset_left = -1126.0
-offset_top = -161.0
-offset_right = 1555.0
-offset_bottom = 500.0
+offset_left = -1133.0
+offset_top = -165.0
+offset_right = 1548.0
+offset_bottom = 496.0
 texture = ExtResource("1_ro55l")
 expand_mode = 1
 
@@ -5219,15 +5216,3 @@ remote_path = NodePath("../../Camera2D")
 position = Vector2(-663, 355)
 drag_horizontal_enabled = true
 drag_vertical_enabled = true
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(-339, 364)
-texture = ExtResource("8_d1qcu")
-hframes = 4
-vframes = 4
-metadata/_edit_group_ = true
-
-[node name="Area2D" type="Area2D" parent="Sprite2D"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/Area2D"]
-shape = SubResource("CircleShape2D_a3oux")

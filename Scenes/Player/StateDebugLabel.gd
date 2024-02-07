@@ -2,8 +2,6 @@ extends Label
 class_name StateDebugLabel
 
 @export var state_machine : StateMachine
-
-
 var right_face : bool = true
 
 func _ready():

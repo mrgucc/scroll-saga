@@ -2,19 +2,17 @@ extends State
 class_name GroundState
 
 @export var jump_velocity : float = -350.0
-@export var air_state : State
-@export var attack_state: State
 
-func state_input(event: InputEvent):
-	if (event.is_action_pressed("jump")): jump()
-	if (event.is_action_pressed("attack")): attack()
 
-func jump():
-	character.velocity.y = jump_velocity
-	playback.travel("jump")
-	next_state = air_state
-
-func attack():
-	playback.travel("attack1")
-	next_state = attack_state
+func on_enter():
+	playback.travel('move')
 	
+func state_process(_delta):
+	pass
+	
+func state_input(event: InputEvent):
+	if (event.is_action_pressed("jump")): transitioned.emit("AirState")
+	if (event.is_action_pressed("attack")): transitioned.emit("AttackState")
+	if (event.is_action_pressed("block")): transitioned.emit("BlockState")
+	if (event.is_action_pressed("roll")): transitioned.emit("RollState")
+

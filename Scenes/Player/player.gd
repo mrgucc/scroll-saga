@@ -2,6 +2,7 @@ extends CharacterBody2D
 class_name Player
 
 @export var speed : float = 200.0
+@export var roll_speed : float = 350.0
 @onready var sprite : Sprite2D = $Sprite2D
 @onready var animation_tree : AnimationTree = $AnimationTree
 
@@ -26,14 +27,15 @@ func update_animation_parameters():
 func update_animation_direction():
 	if direction.x > 0:
 		sprite.flip_h = false
+		$BlockArea2D.position.x = 18
 	elif direction.x < 0:
 		sprite.flip_h = true
+		$BlockArea2D.position.x = -18
 
 func update_animation_moving():
 	direction = Input.get_vector("left", "right", "up", "down")
-	if direction.x != 0 :
+	if (direction.x != 0 and $StateMachine.current_state.can_move):
 		velocity.x = direction.x * speed
-		pass
 	else:
 		velocity.x = move_toward(velocity.x, 0, speed)
 	pass

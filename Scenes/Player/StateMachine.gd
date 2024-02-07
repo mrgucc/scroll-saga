@@ -9,41 +9,39 @@ class_name StateMachine
 var facing_right: bool
 signal direction_state(facing_right : bool)
 
-var states : Array[State]
+var states: Dictionary = {}
 
 func _ready():
 	for child in get_children():
 		if(child is State):
-			states.append(child)
+			states[child.name] = child
+			child.transitioned.connect(on_child_transitioned)
 			
 			# Set the states up with what they need to function
 			child.character = character
 			child.playback = animation_tree["parameters/playback"]
 			
-			#connect to interrupt signal
-			child.connect("interrupt_state", on_state_interrupt_state)
-			
 		else:
 			push_warning("Child " + child.name + " is not a State for CharacterStateMachine")
 
-func _physics_process(delta):
-	if(current_state.next_state != null):
-		switch_states(current_state.next_state)
+func _process(delta):
 	current_state.state_process(delta)
+	
+func _physics_process(delta):
+	current_state.state_physics_process(delta)
 	emit_signal("direction_state", !character.sprite.flip_h)
 	
-func switch_states(new_state : State):
-	if(current_state != null):
-		current_state.on_exit()
-		current_state.next_state = null
-	
-	current_state = new_state
-	
-	current_state.on_enter()
-
+func on_child_transitioned(new_state_name: StringName) -> void:
+	var new_state = states.get(new_state_name)
+	if new_state != null:
+		if new_state != current_state:
+			current_state.on_exit()
+			new_state.on_enter()
+			current_state = new_state
+	else:
+		push_warning("Called transition on a state that does not exist")
+		
 func _input(event : InputEvent):
 	current_state.state_input(event)
 
 
-func on_state_interrupt_state(new_state: State):
-	switch_states(new_state)
