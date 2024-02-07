@@ -728,7 +728,7 @@ states/wall_grab/position = Vector2(942, 243)
 states/wall_slide/node = SubResource("AnimationNodeAnimation_t2yfa")
 states/wall_slide/position = Vector2(1068, 238)
 transitions = ["jump", "wall_grab", SubResource("AnimationNodeStateMachineTransition_6mfat"), "wall_grab", "wall_slide", SubResource("AnimationNodeStateMachineTransition_ajfak"), "jump", "land", SubResource("AnimationNodeStateMachineTransition_2kfk1"), "move", "roll", SubResource("AnimationNodeStateMachineTransition_1vum0"), "move", "jump", SubResource("AnimationNodeStateMachineTransition_2mwmo"), "roll", "move", SubResource("AnimationNodeStateMachineTransition_socs0"), "move", "attack1", SubResource("AnimationNodeStateMachineTransition_pd7j4"), "attack1", "attack2", SubResource("AnimationNodeStateMachineTransition_d0i8b"), "attack2", "attack3", SubResource("AnimationNodeStateMachineTransition_yfh8y"), "attack1", "move", SubResource("AnimationNodeStateMachineTransition_n5xir"), "attack2", "move", SubResource("AnimationNodeStateMachineTransition_lfdlw"), "attack3", "move", SubResource("AnimationNodeStateMachineTransition_aoib7"), "move", "hurt", SubResource("AnimationNodeStateMachineTransition_wffbu"), "hurt", "move", SubResource("AnimationNodeStateMachineTransition_7b3j1"), "hurt", "death", SubResource("AnimationNodeStateMachineTransition_if4j1"), "block_idle", "block_effect", SubResource("AnimationNodeStateMachineTransition_51vf6"), "move", "block_idle", SubResource("AnimationNodeStateMachineTransition_83ps7"), "block_effect", "block_idle", SubResource("AnimationNodeStateMachineTransition_f56jn"), "block_idle", "move", SubResource("AnimationNodeStateMachineTransition_gaouw"), "death", "End", SubResource("AnimationNodeStateMachineTransition_rhl01"), "Start", "move", SubResource("AnimationNodeStateMachineTransition_vvfh8"), "wall_slide", "move", SubResource("AnimationNodeStateMachineTransition_a3tfh"), "wall_grab", "jump", SubResource("AnimationNodeStateMachineTransition_40jyf"), "land", "move", SubResource("AnimationNodeStateMachineTransition_skl70")]
-graph_offset = Vector2(354, 154)
+graph_offset = Vector2(239.72, 157.22)
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_p54w3")
@@ -774,6 +774,10 @@ ground_state = NodePath("../GroundState")
 [node name="AttackState" type="Node" parent="StateMachine"]
 script = ExtResource("6_wh8ac")
 
+[node name="Timer" type="Timer" parent="StateMachine/AttackState"]
+wait_time = 0.15
+one_shot = true
+
 [node name="StateDebugLabel" type="Label" parent="." node_paths=PackedStringArray("state_machine")]
 offset_left = -48.0
 offset_top = -67.0
@@ -783,3 +787,5 @@ text = "State:
 Facing: "
 script = ExtResource("5_rexe5")
 state_machine = NodePath("../StateMachine")
+
+[connection signal="animation_finished" from="AnimationTree" to="StateMachine/AttackState" method="_on_animation_tree_animation_finished"]
