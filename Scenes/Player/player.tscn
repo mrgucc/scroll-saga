@@ -1,4 +1,4 @@
-[gd_scene load_steps=71 format=3 uid="uid://nftmnhwv8jce"]
+[gd_scene load_steps=72 format=3 uid="uid://nftmnhwv8jce"]
 
 [ext_resource type="Texture2D" uid="uid://4cd2j1vusddt" path="res://Art/Character/HeroKnight/HeroKnight.png" id="1_are1r"]
 [ext_resource type="Script" path="res://Scenes/Player/player.gd" id="1_p54w3"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://Scenes/Player/AttackState.gd" id="6_wh8ac"]
 [ext_resource type="Script" path="res://Scenes/Player/RollState.gd" id="7_aw0eg"]
 [ext_resource type="Script" path="res://Scenes/Player/BlockState.gd" id="8_1fyey"]
+[ext_resource type="Script" path="res://Scenes/Player/ClimbState.gd" id="9_colnv"]
 [ext_resource type="Script" path="res://Scenes/Player/BlockArea2D.gd" id="10_en2sw"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5g8h2"]
@@ -731,11 +732,11 @@ states/move/position = Vector2(725, 439)
 states/roll/node = SubResource("AnimationNodeAnimation_b06k1")
 states/roll/position = Vector2(503, 529)
 states/wall_grab/node = SubResource("AnimationNodeAnimation_xisx3")
-states/wall_grab/position = Vector2(942, 243)
+states/wall_grab/position = Vector2(947, 240)
 states/wall_slide/node = SubResource("AnimationNodeAnimation_t2yfa")
-states/wall_slide/position = Vector2(1068, 238)
+states/wall_slide/position = Vector2(1171, 239)
 transitions = ["jump", "wall_grab", SubResource("AnimationNodeStateMachineTransition_6mfat"), "wall_grab", "wall_slide", SubResource("AnimationNodeStateMachineTransition_ajfak"), "jump", "land", SubResource("AnimationNodeStateMachineTransition_2kfk1"), "move", "roll", SubResource("AnimationNodeStateMachineTransition_1vum0"), "move", "jump", SubResource("AnimationNodeStateMachineTransition_2mwmo"), "roll", "move", SubResource("AnimationNodeStateMachineTransition_socs0"), "move", "attack1", SubResource("AnimationNodeStateMachineTransition_pd7j4"), "attack1", "attack2", SubResource("AnimationNodeStateMachineTransition_d0i8b"), "attack2", "attack3", SubResource("AnimationNodeStateMachineTransition_yfh8y"), "attack1", "move", SubResource("AnimationNodeStateMachineTransition_n5xir"), "attack2", "move", SubResource("AnimationNodeStateMachineTransition_lfdlw"), "attack3", "move", SubResource("AnimationNodeStateMachineTransition_aoib7"), "move", "hurt", SubResource("AnimationNodeStateMachineTransition_wffbu"), "hurt", "move", SubResource("AnimationNodeStateMachineTransition_7b3j1"), "hurt", "death", SubResource("AnimationNodeStateMachineTransition_if4j1"), "block_idle", "block_effect", SubResource("AnimationNodeStateMachineTransition_51vf6"), "move", "block_idle", SubResource("AnimationNodeStateMachineTransition_83ps7"), "block_effect", "block_idle", SubResource("AnimationNodeStateMachineTransition_f56jn"), "block_idle", "move", SubResource("AnimationNodeStateMachineTransition_gaouw"), "death", "End", SubResource("AnimationNodeStateMachineTransition_rhl01"), "Start", "move", SubResource("AnimationNodeStateMachineTransition_vvfh8"), "wall_slide", "move", SubResource("AnimationNodeStateMachineTransition_a3tfh"), "wall_grab", "jump", SubResource("AnimationNodeStateMachineTransition_40jyf"), "land", "move", SubResource("AnimationNodeStateMachineTransition_skl70")]
-graph_offset = Vector2(197.72, 178.22)
+graph_offset = Vector2(173.72, 167.22)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3h5sv"]
 size = Vector2(6, 24)
@@ -801,6 +802,13 @@ can_move = false
 script = ExtResource("8_1fyey")
 blocking_area = NodePath("../../BlockArea2D")
 
+[node name="ClimbState" type="Node" parent="StateMachine"]
+script = ExtResource("9_colnv")
+can_move = false
+
+[node name="Timer" type="Timer" parent="StateMachine/ClimbState"]
+wait_time = 1.5
+
 [node name="StateDebugLabel" type="Label" parent="." node_paths=PackedStringArray("state_machine")]
 offset_left = -48.0
 offset_top = -67.0
@@ -823,4 +831,5 @@ shape = SubResource("RectangleShape2D_3h5sv")
 [connection signal="animation_finished" from="AnimationTree" to="StateMachine/AttackState" method="_on_animation_tree_animation_finished"]
 [connection signal="animation_finished" from="AnimationTree" to="StateMachine/RollState" method="_on_animation_tree_animation_finished"]
 [connection signal="timeout" from="StateMachine/AttackState/Timer" to="StateMachine/AttackState" method="_on_timer_timeout"]
+[connection signal="timeout" from="StateMachine/ClimbState/Timer" to="StateMachine/ClimbState" method="_on_timer_timeout"]
 [connection signal="area_entered" from="BlockArea2D" to="BlockArea2D" method="_on_area_entered"]

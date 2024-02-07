@@ -29,6 +29,8 @@ func _process(delta):
 	
 func _physics_process(delta):
 	current_state.state_physics_process(delta)
+	if (character.is_on_wall_only()):
+		current_state = $ClimbState
 	emit_signal("direction_state", !character.sprite.flip_h)
 	
 func on_child_transitioned(new_state_name: StringName) -> void:
